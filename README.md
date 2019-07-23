@@ -1,0 +1,1 @@
+always have the readme file for notes and the like

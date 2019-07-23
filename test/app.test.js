@@ -44,4 +44,44 @@ describe('app routes', () => {
         expect(res.body).toEqual([jonJSON, jon2JSON]);
       });
   });
+
+  it('get a single Jon by id', async() => {
+    const jon1 = await Jon.create({ name: 'Jon Alpha' });
+
+    return request(app)
+      .get(`/api/v1/jons/${jon1._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          name: 'Jon Alpha',
+          __v: 0
+        });
+      });
+  });
+
+  it('can PATCH to update a jon', async() => {
+    const jon1 = await Jon.create({ name: 'Jon Alpha' });
+
+    return request(app)
+      .patch(`/api/v1/jons/${jon1._id}`)
+      .send({ name: 'Jon Charlie' })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          name: 'Jon Charlie',
+          __v: 0,
+        });
+      });
+  });
+
+  it('uses DELETE to delete a Jon', async() => {
+    const jon1 = await Jon.create({ name: 'Jon Alpha' });
+
+    return request(app)
+      .delete(`/api/v1/jons/${jon1._id}`)
+      .then(res => {
+        expect(res.body.name).toEqual('Jon Alpha');
+      });
+  });
 });
+
